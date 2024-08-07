@@ -2,11 +2,14 @@ package com.alimentationAkonkwa.HeadFirst.models;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.Set;
 
@@ -39,5 +42,6 @@ public class User {
 //    @OneToMany(mappedBy = "user")
 //    private Set<WishList> wishLists;
 //    @OneToOne
-//   private userRole userRole;
+//    @JoinColumn(name = "Role user")
+    private String role;
 }

@@ -1,12 +1,14 @@
 package com.alimentationAkonkwa.HeadFirst.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 @Data
@@ -16,14 +18,21 @@ import java.util.Set;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "categorie_Id")
+    @Column(name = "category_id")
     private Long id;
     @Column(name = "Nom_Categorie",nullable = false,unique = true)
     @NotEmpty(message = "la categorie svp!")
     private String name;
-    @OneToMany
-    @Column(name = "product_id")
-    private Set<Product> products;
+    @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
+    private Collection<Product> products;
+
+    @PreRemove
+    private void preRemove() {
+        for (Product product : products) {
+            product.getCategories().remove(this); // dissocier la catégorie des produits
+        }
+    }
 //    @OneToOne
 //    private Inventory inventory;
 }
